@@ -1,0 +1,4 @@
+#!/bin/sh
+
+TERM=rxvt dtach -A /tmp/nl-cmus cmus
+

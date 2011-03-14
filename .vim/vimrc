@@ -1,0 +1,128 @@
+" appearence
+set guifont=inconsolata
+set guioptions=agirLtc 
+set ruler
+set relativenumber
+colorscheme zenburn
+
+syntax on
+
+set autoread
+
+" leader
+let mapleader = ","
+let g:mapleader = ","
+
+" common cmd shortcuts
+nmap <leader>w :w!<cr>
+nmap <leader>q :q<cr>
+nmap <leader>Q :qa<cr>
+
+" vimrc
+map <leader>rc :tabedit ~/.vimrc<cr>
+autocmd! bufwritepost .vimrc source ~/.vimrc
+
+" default indent
+set tabstop=2
+set shiftwidth=2
+set autoindent
+
+" scrolloff
+set scrolloff=100
+set sidescrolloff=10
+
+" filetype
+filetype plugin indent on
+
+
+" tabs
+map <leader>tn :tabnew<cr>
+map <leader>te :tabedit 
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove 
+
+" moving btw windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" wrk w/ bufs
+map <leader>bd :bd<cr>
+" TODO: moving
+
+" <leader>cd switches to the directory of the current buffer
+map <leader>cd :cd %:p:h<cr>
+
+" move text with ALT+[jk]
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+" search options
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+
+" cursor hiliting
+set cursorcolumn
+set cursorline
+
+" completeion
+inoremap <c-space> <c-x><c-n>
+set completeopt=menu,longest
+" supertab
+let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:SuperTabMidWordCompletion = 0
+let g:SuperTabLongestEnhanced = 1
+let g:SuperTabLongestHighlight = 1
+let g:SuperTabCrMapping = 0
+
+" cmd tab-completeion
+set wildmode=longest,list
+set wildmenu
+
+" hilite braces
+set showmatch
+set matchtime=1
+
+" command-t
+let g:CommandTMaxHeight = 15
+set wildignore+=*.o,*.obj,.git,*.pyc
+noremap <leader>o :CommandT<cr>
+noremap <leader>y :CommandTFlush<cr>
+
+" python
+let python_highlihgt_all = 1
+" trailing whitespace trimming
+autocmd BufWritePre *.py :%s/\s\+$//e
+
+set backspace=indent,eol,start
+
+" sessions
+set sessionoptions-=options
+set sessionoptions+=localoptions
+nmap <leader>sm :mks ~/.vim/sessions/
+nmap <leader>sw :exe "mks! " . v:this_session<cr>
+nmap <leader>so :so ~/.vim/sessions/
+
+" (x)html
+let xml_use_xhtml = 1
+let xml_no_html = 1
+
+" less css
+au BufNewFile,BufRead *.less set filetype=less
+au FileType less set omnifunc=csscomplete#CompleteCSS
+
+" colorcolumn
+set colorcolumn=79
+hi ColorColumn ctermbg=lightgrey guibg=#504040
+
+" relativenumber
+nmap <leader>nr :setl rnu<cr>
+nmap <leader>nn :setl nu<cr>
+
+set directory=~/.vim/tmp
+

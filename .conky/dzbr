@@ -1,0 +1,13 @@
+background no
+#double_buffer yes
+update_interval 0.5
+short_units yes
+#use_spacer left
+out_to_console yes
+out_to_x no
+
+TEXT
+^fg(\#7777ff)[$uptime_short]^fg() \
+${time %Y^fg(#55cc55)%m^fg(#cc5555)%d ^fg(#cccc55)[%u] \
+^fg(#cc5555)%H^fg(#55cc55)%M^fg()%S}\
+ \

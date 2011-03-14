@@ -1,0 +1,7 @@
+set format_current= %a - %t %=%3n @ %l [%y]
+set format_playlist= %-20a %3n %t %=%l [%y] %d
+set format_playlist_va= %-20A %3n [%a] %t %= %l [%y] %d
+set format_title=%a - %t - %n @ %l [%y]
+set format_trackwin=%3n. %t%= %y %d
+set format_trackwin_va=%3n. %a - %t %=%y %d
+

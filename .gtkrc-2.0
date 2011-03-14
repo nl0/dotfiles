@@ -1,0 +1,22 @@
+gtk_color_scheme = "fg_color:#B3B3A1\nbg_color:#404040\nbase_color:#3f3f3f\ntext_color:#B3B3A1\nselected_bg_color:#1E2320\nselected_fg_color:#A3CACC"
+
+style "vim" {
+	GtkRange::slider_width = 10
+	GtkRange::stepper_size = 10
+
+	fg[NORMAL]       = @fg_color 
+	fg[PRELIGHT]     = @selected_fg_color
+	fg[SELECTED]     = @selected_fg_color
+	fg[ACTIVE]       = darker (@fg_color)
+	fg[INSENSITIVE]  = lighter (@bg_color)
+
+	bg[NORMAL]       = @bg_color
+	bg[PRELIGHT]     = @selected_bg_color
+	bg[SELECTED]	   = @selected_bg_color
+	bg[ACTIVE]       = @bg_color
+	bg[INSENSITIVE]  = @bg_color 
+
+	engine "murrine" {}
+}
+widget "vim-main-window.*" style "vim"
+

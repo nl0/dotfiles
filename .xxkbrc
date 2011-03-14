@@ -1,0 +1,15 @@
+XXkb.image.path: /home/nl/icons/lang
+
+XXkb.mainwindow.enable: yes
+XXkb.mainwindow.type: top
+XXkb.mainwindow.appicon: yes
+XXkb.mainwindow.geometry: 30x20-0+0
+XXkb.mainwindow.image.1: en.xpm
+XXkb.mainwindow.image.2: ru.xpm
+XXkb.mainwindow.image.3:
+XXkb.mainwindow.image.4:
+
+XXkb.*.border.width: 0
+XXkb.*.border.color:
+XXkb.*.label.enable: no
+

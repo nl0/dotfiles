@@ -1,0 +1,12 @@
+background no
+#double_buffer yes
+update_interval 10
+short_units yes
+#use_spacer left
+out_to_console yes
+out_to_x no
+
+TEXT
+ \
+[${exec whoami}^fg(\#55cc55)@^fg()$nodename] \
+^fg(\#7777ff)${addr eth0}\
