@@ -79,7 +79,7 @@ myFocusedBorderColor = "#30c030"
 scratchpads =
 	[ NS "htop" (myTerminal ++ " -e htop") (title =? "htop") big
 	, NS "scratch" (myTerminal ++ " -name scratch") (appName =? "scratch") med
-	, NS "cmus" (myTerminal ++ " -name cmus -e cmus-dtach") (appName =? "cmus") big
+	, NS "cmus" (myTerminal ++ " -name cmus -e cmus") (appName =? "cmus") big
 	, NS "mixer" (myTerminal ++ " -name mixer -e alsamixer") (appName =? "mixer") med
 	] where
 		{-role = stringProperty "WM_WINDOW_ROLE"-}
