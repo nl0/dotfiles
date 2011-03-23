@@ -391,6 +391,7 @@ myStartupHook = return ()
 --
 main = do h <- spawnPipe myTopSB
           spawn (printf "xsetroot -cursor_name left_ptr -solid \"%s\"" bg_light)
+          spawn "xmodmap ~/.xmodmaprc"
           spawn myBLSB
           spawn myBMSB
           spawn myBRSB
