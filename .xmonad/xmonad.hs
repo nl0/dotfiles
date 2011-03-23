@@ -271,8 +271,7 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	, className =? "Chromium"       --> doShift "8"
 	, className =? "Xmessage"       --> doFloat
 	, title     =? "Chromium Preferences" --> doFloat
-	, className =? "Namoroka"       --> doShift "3"
-	, (appName =? "Extension" <&&> className =? "Namoroka") --> doFloat
+	, className =? "Firefox"        --> doShift "3"
 	, className =? "Psi-plus"       --> doShift "9"
 	, (appName =? "event" <&&> className =? "psi") --> doFloat
 	, appName =? "Gemini_Rue.exe"   --> doIgnore
