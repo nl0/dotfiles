@@ -31,9 +31,6 @@ set autoindent
 set scrolloff=100
 set sidescrolloff=10
 
-" filetype
-filetype plugin indent on
-
 
 " tabs
 map <leader>tn :tabnew<cr>
@@ -88,33 +85,12 @@ set wildmenu
 set showmatch
 set matchtime=1
 
-" command-t
-let g:CommandTMaxHeight = 15
-set wildignore+=*.o,*.obj,.git,*.pyc
-noremap <leader>o :CommandT<cr>
-noremap <leader>y :CommandTFlush<cr>
-
-" python
-let python_highlihgt_all = 1
-" trailing whitespace trimming
-autocmd BufWritePre *.py :%s/\s\+$//e
-
-set backspace=indent,eol,start
-
 " sessions
 set sessionoptions-=options
 set sessionoptions+=localoptions
 nmap <leader>sm :mks ~/.vim/sessions/
 nmap <leader>sw :exe "mks! " . v:this_session<cr>
 nmap <leader>so :so ~/.vim/sessions/
-
-" (x)html
-let xml_use_xhtml = 1
-let xml_no_html = 1
-
-" less css
-au BufNewFile,BufRead *.less set filetype=less
-au FileType less set omnifunc=csscomplete#CompleteCSS
 
 " colorcolumn
 set colorcolumn=79
@@ -125,4 +101,33 @@ nmap <leader>nr :setl rnu<cr>
 nmap <leader>nn :setl nu<cr>
 
 set directory=~/.vim/tmp
+
+
+" filetype and pathogen
+filetype off
+call pathogen#runtime_append_all_bundles()
+filetype plugin indent on
+
+" python
+let python_highlihgt_all = 1
+" trailing whitespace trimming
+autocmd BufWritePre *.py :%s/\s\+$//e
+
+set backspace=indent,eol,start
+
+" (x)html
+let xml_use_xhtml = 1
+let xml_no_html = 1
+
+" less css
+function Lessc_compile ()
+	let nam = expand('<afile>:r')
+	exe "!lessc <afile> > ".nam.".css"
+endfunction
+au BufNewFile,BufRead *.less set filetype=less
+au FileType less set omnifunc=csscomplete#CompleteCSS
+au FileWritePost,BufWritePost *.less :call Lessc_compile()
+
+" coffee-script
+au BufWritePost,FileWritePost *.coffee !coffee -c <afile>
 
