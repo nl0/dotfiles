@@ -16,11 +16,12 @@ parser = argparse.ArgumentParser(description='Graph for dzen2.')
 parser.add_argument('-p', '--prefix', default='')
 parser.add_argument('-s', '--suffix', default='')
 parser.add_argument('-n', '--segment-count', type=int, default=50)
-parser.add_argument('-H', '--height', type=int, default=13)
+parser.add_argument('-H', '--height', type=int, default=12)
 parser.add_argument('-w', '--segment-width', type=int, default=1)
 parser.add_argument('-c', '--colors', action=StoreColors, nargs='+',
     default={0: '#30c030', 50: '#c0c030', 75: '#c03030'})
 parser.add_argument('-m', '--max', type=float, default=100.0)
+parser.add_argument('-r', '--center', action='store_true')
 
 
 def format(seq, opts):
@@ -29,8 +30,9 @@ def format(seq, opts):
         h = round(i/opts.max*opts.height)
         for k, v in opts.colors.items():
             if i>=k: c = v
-        res+='^fg(%s)^pa(;%d)^r(%dx%d)'%(
-            c, opts.height-h+1, opts.segment_width, h)
+        if not opts.center:
+            res+='^pa(;%d)'%(opts.height-h+1)
+        res+='^fg(%s)^r(%dx%d)'%(c, opts.segment_width, h)
     return res
 
 if __name__=='__main__':
