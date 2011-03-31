@@ -1,0 +1,10 @@
+background no
+update_interval 1
+short_units yes
+out_to_console yes
+out_to_x no
+
+TEXT
+^fg(\#30c030)[$uptime_short]^fg() \
+${time %Y-%m-%d [%u] %H:%M:%S}\
+ \
