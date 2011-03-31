@@ -7,10 +7,9 @@ Xft.hinting:		1
 Xft.antialias:	1
 Xft.rgba:				rgb
 
-*font: xft:Inconsolata-10,xft:Dejavu LGC Sans Mono
+*font: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 
 #}}} common
-
 
 #{{{ urxvt
 
