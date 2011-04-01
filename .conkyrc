@@ -5,7 +5,13 @@ out_to_console yes
 out_to_x no
 
 TEXT
-2 \
+^tw()${time %H:%M:%S}    \
+
+^fg(\#c03030)^i(/home/nl/icons/monitors/up.xbm)$upspeed\
+ ^fg(\#30c030)$downspeed^i(/home/nl/icons/monitors/dn.xbm)\
+   \
+^fg(\#c07730)^i(/home/nl/icons/monitors/cpu.xbm)\
+ ${exec cat ~/.dzen/cpugraph.out}\
    \
 ^fg(\#c07730)^i(/home/nl/icons/monitors/mem.xbm)\
  ^fg(\#30c030)$memeasyfree^fg()/$memmax\
@@ -15,7 +21,6 @@ TEXT
  c:^fg(\#30c030)${fs_free /mnt/win-c}^fg()/${fs_size /mnt/win-c}\
  d:^fg(\#30c030)${fs_free /mnt/win-d}^fg()/${fs_size /mnt/win-d}\
    \
-^fg(\#c03030)^i(/home/nl/icons/monitors/up.xbm)$upspeed\
- ^fg(\#30c030)$downspeed^i(/home/nl/icons/monitors/dn.xbm)\
-^fg()\
+^fg(\#30c030)[$uptime_short]^fg() \
+^fg()${time %Y-%m-%d [%u]} \
 
