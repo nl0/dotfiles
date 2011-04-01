@@ -3,7 +3,7 @@ XXkb.image.path: /home/nl/icons/lang
 XXkb.mainwindow.enable: yes
 XXkb.mainwindow.type: top
 XXkb.mainwindow.appicon: yes
-XXkb.mainwindow.geometry: 20x14-0+0
+XXkb.mainwindow.geometry: 18x12-0+1
 XXkb.mainwindow.image.1: en.xpm
 XXkb.mainwindow.image.2: ru.xpm
 XXkb.mainwindow.image.3:
