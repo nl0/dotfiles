@@ -22,6 +22,8 @@ parser.add_argument('-c', '--colors', action=StoreColors, nargs='+',
     default={0: '#30c030', 50: '#c0c030', 75: '#c03030'})
 parser.add_argument('-m', '--max', type=float, default=100.0)
 parser.add_argument('-r', '--center', action='store_true')
+parser.add_argument('-o', '--out', type=argparse.FileType('w'))
+parser.add_argument('-O', '--overwrite', action='store_true')
 
 
 def format(seq, opts):
@@ -39,13 +41,17 @@ if __name__=='__main__':
     opts = parser.parse_args()
 
     q = deque([0]*opts.segment_count)
+    out = opts.out or sys.stdout
 
     while 1:
         l = sys.stdin.readline()
         if not l: break
         q.append(int(l))
         q.popleft()
-        sys.stdout.write('^fg()^pa()'+opts.prefix+format(q, opts)+
+        if opts.overwrite:
+            out.seek(0)
+            out.truncate()
+        out.write('^fg()^pa()'+opts.prefix+format(q, opts)+
             '^fg()^pa()'+opts.suffix+'\n')
-        sys.stdout.flush()
+        out.flush()
 
