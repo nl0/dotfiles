@@ -126,9 +126,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
     -- restart xmonad
-    , ((modm .|. shiftMask, xK_r     ), spawn "killall conky dzen2 xxkb; xmonad --restart")
+    , ((modm .|. shiftMask, xK_r     ), spawn "killall conky xxkb; xmonad --restart")
     -- recompile and restart xmonad
-    , ((modm .|. controlMask, xK_r   ), spawn "killall conky dzen2 xxkb; xmonad --recompile; xmonad --restart")
+    , ((modm .|. controlMask, xK_r   ), spawn "killall conky xxkb; xmonad --recompile; xmonad --restart")
 		-- cmus controls
 		, ((modm              , xK_z     ), spawn "cmus-remote -r")
 		, ((modm              , xK_x     ), spawn "cmus-remote -p")
@@ -178,7 +178,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
 ------------------------------------------------------------------------
 -- Layouts:
-myLayout = smartBorders ( avoidStruts ( Mirror tiled ||| tiled ||| Full ) )
+myLayout = smartBorders ( avoidStruts ( tiled ||| Mirror tiled ||| Full ) )
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -254,13 +254,8 @@ myLogHook h = dynamicLogWithPP $ defaultPP
 	}
 
 -- statusbars
-mySBFont = "-*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*"
-
-dzenCmd :: Int -> Int -> String -> String
-dzenCmd x w ta = 
-	printf "dzen2 -e - -w %d -ta %s -bg '%s' -fn '%s' -geometry +%d" w ta bg_light mySBFont x
-
-dzenCmdBottom x w ta = dzenCmd x w ta ++ "-0"
+myFont = "-*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*"
+dzenCmd = printf "dzen2 -bg '%s' -fg '%s' -fn '%s'" bg_light fg_light myFont
 
 ------------------------------------------------------------------------
 -- Startup hook
@@ -273,14 +268,10 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 -- running it
 main = do
-	-- top dzenbars
-	h <- spawnPipe (dzenCmd 0 600 "l")
-	{-spawn (dzenCmd 600 680 "r")-}
-	-- bottom dzenbars
-	spawn ("conky -c ~/.dzen/conky_time | " ++ (dzenCmdBottom 680 600 "r"))
-	spawn ("cat ~/.dzen/fifo | dmplex | " ++ (dzenCmdBottom 0 680 "l"))
-	spawn "conky -c ~/.dzen/conky_mon > ~/.dzen/fifo"
-	spawn "conky -c ~/.dzen/conky_mon -t '$cpu' | ~/.dzen/graph.py -rp '1  ^fg(#c07730)^i(/home/nl/icons/monitors/cpu.xbm) ' > ~/.dzen/fifo"
+	h <- spawnPipe (dzenCmd ++ " -e - -w 600 -ta l")
+	spawn ("conky | " ++ dzenCmd ++ " -x 600 -tw 680 -ta r -sa r -l 1" ++
+		" -e 'button1=togglecollapse;leaveslave=collapse;button3=togglestick'")
+	spawn "conky -t '$cpu' | ~/.dzen/graph.py -rOo ~/.dzen/cpugraph.out"
 
 	spawn "sleep 0.1; xxkb"
 
