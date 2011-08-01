@@ -1,8 +1,8 @@
 " appearence
-set guifont=inconsolata
-set guioptions=agirLtc 
-set ruler
-set relativenumber
+se guifont=Terminus\ 8
+se go=agirLtc
+se ruler
+se nu
 colorscheme zenburn
 
 syntax on
@@ -34,9 +34,9 @@ set sidescrolloff=10
 
 " tabs
 map <leader>tn :tabnew<cr>
-map <leader>te :tabedit 
+map <leader>te :tabedit<space>
 map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
+map <leader>tm :tabmove<space>
 
 " moving btw windows
 map <C-j> <C-W>j
@@ -102,6 +102,10 @@ nmap <leader>nn :setl nu<cr>
 
 set directory=~/.vim/tmp
 
+" trailing whitespace trimming
+autocmd BufWritePre * :%s/\s\+$//e
+
+set backspace=indent,eol,start
 
 " filetype and pathogen
 filetype off
@@ -110,10 +114,6 @@ filetype plugin indent on
 
 " python
 let python_highlihgt_all = 1
-" trailing whitespace trimming
-autocmd BufWritePre *.py :%s/\s\+$//e
-
-set backspace=indent,eol,start
 
 " (x)html
 let xml_use_xhtml = 1
