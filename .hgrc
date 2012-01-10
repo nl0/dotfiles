@@ -1,16 +1,8 @@
-[diff]
-git = 1
-
 [extensions]
-color=
 crecord=~/.hgext/crecord/crecord
-graphlog=
 hgshelve=~/.hgext/hgshelve/hgshelve.py
-mq=
 #progress=
 purge=
-rebase=
-record=
 
 [ui]
 username=nl_0
