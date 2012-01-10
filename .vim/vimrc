@@ -17,6 +17,8 @@ let g:mapleader = ","
 nmap <leader>w :w!<cr>
 nmap <leader>q :q<cr>
 nmap <leader>Q :qa<cr>
+" save file with root permissions"
+nmap <leader>W :%!sudo tee > /dev/null %<CR>
 
 " vimrc
 map <leader>rc :tabedit ~/.vimrc<cr>
@@ -31,6 +33,22 @@ set autoindent
 set scrolloff=100
 set sidescrolloff=10
 
+
+" unprintable chars
+set list
+set listchars=tab:·\ ,trail:·,extends:→,precedes:←,nbsp:×
+
+" It's 2011. Don't skip wrap lines
+noremap j gj
+noremap k gk
+
+" K to split
+" Basically this splits the current line into two new ones at the cursor position,
+" then joins the second one with whatever comes next.
+" Especially useful for adding items in the middle of long lists/tuples in Python
+" while maintaining a sane text width.
+nnoremap K <nop>
+nnoremap K h/[^ ]<cr>"zd$jyyP^v$h"zpJk:s/\v +$//<cr>:noh<cr>j^
 
 " tabs
 map <leader>tn :tabnew<cr>
