@@ -18,8 +18,7 @@ TEXT
    \
 ^fg(\#c07730)^i(/home/nl/icons/monitors/hdd.xbm)^fg()\
  /:^fg(\#30c030)$fs_free^fg()/$fs_size\
- c:^fg(\#30c030)${fs_free /mnt/win-c}^fg()/${fs_size /mnt/win-c}\
- d:^fg(\#30c030)${fs_free /mnt/win-d}^fg()/${fs_size /mnt/win-d}\
+ /var:^fg(\#30c030)${fs_free /var}^fg()/${fs_size /var}\
    \
 ^fg(\#30c030)[$uptime_short]^fg() \
 ^fg()${time %Y-%m-%d [%u]} \
