@@ -1,4 +1,0 @@
-clear Lock
-keycode 66 = BackSpace
-add Lock = Caps_Lock
-
