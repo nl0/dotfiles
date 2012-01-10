@@ -1,11 +1,9 @@
 # Check for an interactive session
 [ -z "$PS1" ] && return
 
-#PS1='[\u@\h \W]\$ '
 PS1='\[\e[0;32m\][\u@\H \[\e[0;33m\]\w\[\e[0;32m\]]\$\[\e[0m\] '
 
 # aliases
-alias ..='cd ..'
 alias diff='colordiff'
 alias df='df -h'
 alias du='du -ch'
@@ -16,8 +14,10 @@ alias mkdir='mkdir -pv'
 alias more='less'
 alias ssh='TERM=$COLORTERM ssh'
 alias cr='cmus-remote'
+alias mc='PAGER=vim mc'
 
-#alias sel='echo sel: `xclip -o`; echo clip: `xclip -o -selection "clipboard"`'
+shopt -s autocd
+#set -o vi
 
 if [ -n "$DISPLAY" ]; then
 	export BROWSER=chromium
