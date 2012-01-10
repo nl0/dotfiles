@@ -4,7 +4,7 @@ style "vim" {
 	GtkRange::slider_width = 10
 	GtkRange::stepper_size = 10
 
-	fg[NORMAL]       = @fg_color 
+	fg[NORMAL]       = @fg_color
 	fg[PRELIGHT]     = @selected_fg_color
 	fg[SELECTED]     = @selected_fg_color
 	fg[ACTIVE]       = darker (@fg_color)
@@ -14,9 +14,7 @@ style "vim" {
 	bg[PRELIGHT]     = @selected_bg_color
 	bg[SELECTED]	   = @selected_bg_color
 	bg[ACTIVE]       = @bg_color
-	bg[INSENSITIVE]  = @bg_color 
-
-	engine "murrine" {}
+	bg[INSENSITIVE]  = @bg_color
 }
 widget "vim-main-window.*" style "vim"
 
