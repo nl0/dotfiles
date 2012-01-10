@@ -46,21 +46,6 @@ myBorderWidth   = 1
 --
 myModMask       = mod4Mask
 
--- The mask for the numlock key. Numlock status is "masked" from the
--- current modifier status, so the keybindings will work with numlock on or
--- off. You may need to change this on some systems.
---
--- You can find the numlock modifier by running "xmodmap" and looking for a
--- modifier with Num_Lock bound to it:
---
--- > $ xmodmap | grep Num
--- > mod2        Num_Lock (0x4d)
---
--- Set numlockMask = 0 if you don't have a numlock key, or want to treat
--- numlock status separately.
---
-myNumlockMask   = mod2Mask
-
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
 -- workspace name. The number of workspaces is determined by the length
@@ -70,7 +55,7 @@ myNumlockMask   = mod2Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces = map show [1..9]
+myWorkspaces = ["1", "2", "3", "q", "w", "e", "s"]
 
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor  = "#303030"
@@ -81,6 +66,7 @@ scratchpads =
 	, NS "scratch" (myTerminal ++ " -name scratch") (appName =? "scratch") big
 	, NS "cmus" (myTerminal ++ " -name cmus -e cmus") (appName =? "cmus") big
 	, NS "mixer" (myTerminal ++ " -name mixer -e alsamixer") (appName =? "mixer") big
+	, NS "agenda" (myTerminal ++ " -name agenda -e vim ~/agenda.txt") (appName =? "agenda") big
 	] where
 		big = customFloating $ W.RationalRect (1/10) (1/10) (4/5) (4/5)
 
@@ -124,7 +110,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- See also the statusBar function from Hooks.DynamicLog.
     , ((modm .|. shiftMask, xK_b     ), sendMessage ToggleStruts)
     -- quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    , ((modm .|. controlMask, xK_q   ), io (exitWith ExitSuccess))
     -- restart xmonad
     , ((modm .|. shiftMask, xK_r     ), spawn "killall conky xxkb; xmonad --restart")
     -- recompile and restart xmonad
@@ -143,6 +129,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 		, ((mod1Mask .|. controlMask, xK_Delete ), namedScratchpadAction scratchpads "htop")
 		, ((modm              , xK_p     ), namedScratchpadAction scratchpads "cmus")
 		, ((modm .|. shiftMask, xK_m     ), namedScratchpadAction scratchpads "mixer")
+		, ((modm              , xK_a     ), namedScratchpadAction scratchpads "agenda")
 		-- scrot
 		, ((modm              , xK_Print ), spawn "scrot")
     ]
@@ -151,7 +138,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --
     ++
     [((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+        -- | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_1, xK_2, xK_3, xK_q, xK_w, xK_e, xK_s]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
@@ -193,19 +181,22 @@ myLayout = smartBorders ( avoidStruts ( tiled ||| Mirror tiled ||| Full ) )
 -- Window rules:
 myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> composeAll
 	[ className =? "MPlayer"        --> doFloat
-	, className =? "Gimp"           --> doFloat
+	, className =? "Vlc"            --> doFloat
 	, appName   =? "XXkb"           --> doIgnore
 	, appName   =? "desktop_window" --> doIgnore
 	, appName   =? "kdesktop"       --> doIgnore
 	, appName   =? "gens"           --> doFloat
 	, className =? "Exe"            --> doIgnore
-	, className =? "Chromium"       --> doShift "8"
+	, className =? "Plugin-container" --> doIgnore
 	, className =? "Xmessage"       --> doFloat
+	, className =? "Chromium"       --> doShift "e"
 	, title     =? "Chromium Preferences" --> doFloat
-	, className =? "Firefox"        --> doShift "3"
-	, className =? "Psi-plus"       --> doShift "9"
+	, className =? "Firefox"        --> doShift "e"
+	, className =? "psi"            --> doShift "s"
+	, className =? "Psi-plus"       --> doShift "s"
 	, (appName =? "event" <&&> className =? "psi") --> doFloat
-	, appName =? "Gemini_Rue.exe"   --> doIgnore
+	, title     =? "agenda"         --> doFloat
+	{-, appName =? "Gemini_Rue.exe"   --> doIgnore-}
 	] <+> manageHook defaultConfig
 
 ------------------------------------------------------------------------
@@ -229,8 +220,8 @@ orange = "#c07730"
 
 myLayoutIcon layout = dzenColor orange "" (icon layout)
 	where
-		icon layout = 
-			"^i(/home/nl/icons/layouts/" ++ 
+		icon layout =
+			"^i(/home/nl/icons/layouts/" ++
 			(\x -> case x of
 				"Tall"            -> "tall.xbm"
 				"Mirror Tall"     -> "tall_mirr.xbm"
@@ -250,7 +241,7 @@ myLogHook h = dynamicLogWithPP $ defaultPP
 	, ppTitle    = myPPTitle
 	, ppLayout   = myLayoutIcon
 	, ppOutput   = hPutStrLn h
-	, ppSort     = fmap (.namedScratchpadFilterOutWorkspace) getSortByTag
+	, ppSort     = fmap (.namedScratchpadFilterOutWorkspace) getSortByIndex
 	}
 
 -- statusbars
@@ -270,20 +261,17 @@ myStartupHook = return ()
 main = do
 	h <- spawnPipe (dzenCmd ++ " -e - -w 600 -ta l")
 	spawn ("conky | " ++ dzenCmd ++ " -x 600 -tw 680 -ta r -sa r -l 1" ++
-		" -e 'button1=togglecollapse;leaveslave=collapse;button3=togglestick'")
+		" -e 'button1=togglecollapse;'")
 	spawn "conky -t '$cpu' | ~/.dzen/graph.py -rOo ~/.dzen/cpugraph.out"
 
-	spawn "sleep 0.1; xxkb"
+	spawn "sleep 0.2; xxkb"
 
-	spawn "xsetroot -cursor_name left_ptr"
-	spawn "xmodmap ~/.xmodmaprc"
 	xmonad defaultConfig {
 		-- simple stuff
 		terminal           = myTerminal,
 		focusFollowsMouse  = myFocusFollowsMouse,
 		borderWidth        = myBorderWidth,
 		modMask            = myModMask,
-		numlockMask        = myNumlockMask,
 		workspaces         = myWorkspaces,
 		normalBorderColor  = myNormalBorderColor,
 		focusedBorderColor = myFocusedBorderColor,
