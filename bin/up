@@ -1,0 +1,23 @@
+#!/usr/bin/env python2
+import os
+
+updaters = (
+    ('pkg', "sudo yaourt -Syu"),
+    ('aur', 'sudo yaourt -Sua'),
+    #('vundle',
+    ('npm', "sudo npm up -g"),
+)
+
+def up(*args):
+    for u in updaters:
+        if args and u[0] not in args: continue
+        print '>>> %s up'%u[0]
+        os.system(u[1])
+        print '>>> %s up done'%u[0]
+
+
+if __name__=='__main__':
+    from optparse import OptionParser
+    args = OptionParser().parse_args()[1]
+    up(*args)
+
