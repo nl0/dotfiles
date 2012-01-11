@@ -12,6 +12,7 @@ import Data.Monoid
 import System.Exit
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Tabbed
 import XMonad.Util.Run -- (spawnPipe, hPutStrLn)
@@ -194,6 +195,7 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	, className =? "Firefox"        --> doShift "e"
 	, className =? "psi"            --> doShift "s"
 	, className =? "Psi-plus"       --> doShift "s"
+	, className =? "feh"            --> doFullFloat
 	, (appName =? "event" <&&> className =? "psi") --> doFloat
 	, title     =? "agenda"         --> doFloat
 	{-, appName =? "Gemini_Rue.exe"   --> doIgnore-}
