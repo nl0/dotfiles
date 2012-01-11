@@ -38,7 +38,7 @@ set sidescrolloff=10
 set list
 set listchars=tab:·\ ,trail:·,extends:→,precedes:←,nbsp:×
 
-" It's 2011. Don't skip wrap lines
+" Don't skip wrap lines
 noremap j gj
 noremap k gk
 
@@ -121,14 +121,38 @@ nmap <leader>nn :setl nu<cr>
 set directory=~/.vim/tmp
 
 " trailing whitespace trimming
-autocmd BufWritePre * :%s/\s\+$//e
+autocmd BufWritePre * %s/\s\+$//e
 
 set backspace=indent,eol,start
 
-" filetype and pathogen
+" bundles
 filetype off
-call pathogen#runtime_append_all_bundles()
-filetype plugin indent on
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required!
+Bundle 'gmarik/vundle'
+
+"Bundle 'tpope/vim-haml'
+"Bundle 'pangloss/vim-javascript'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'wavded/vim-stylus'
+"Bundle 'Zenburn'
+Bundle 'TaskList.vim'
+Bundle 'ervandew/supertab'
+Bundle 'groenewege/vim-less'
+Bundle 'scrooloose/nerdcommenter'
+
+filetype plugin indent on " required!
+
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
 
 " python
 let python_highlihgt_all = 1
