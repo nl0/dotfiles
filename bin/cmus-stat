@@ -1,0 +1,39 @@
+#!/usr/bin/env python2
+
+def parse_output(out):
+    '''out should be iterable and yield strings (i.e. file-like)'''
+    status = {
+        'status': None,
+        'file': None,
+        'tag artist': None,
+        'tag title': None,
+    }
+
+    for l in out:
+        for k in status:
+            if l.startswith(k):
+                status[k] = l[len(k)+1:-1]
+                break
+
+    return status
+
+def format_status(status):
+    if not status['status']:
+        return 'cmus is not running'
+
+    if status['status']=='stopped':
+        return 'stopped'
+
+    if status['tag artist'] or status['tag title']:
+        return '%s - %s'%(
+            status['tag artist'] or 'unknown',
+            status['tag title'] or 'unknown',
+        )
+
+    return status['file']
+
+
+if __name__=='__main__':
+    import sys
+    print format_status(parse_output(sys.stdin))
+

@@ -5,6 +5,8 @@ out_to_console yes
 out_to_x no
 
 TEXT
+^tw()${exec cmus-remote -Q 2>/dev/null | cmus-stat}\
+   \
 ^tw()${time %H:%M:%S}    \
 
 ^fg(\#c03030)^i(/home/nl/icons/monitors/up.xbm)$upspeed\
