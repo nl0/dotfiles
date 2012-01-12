@@ -56,7 +56,7 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces = ["1", "2", "3", "q", "w", "e", "s"]
+myWorkspaces = ["1", "2", "3", "q", "w", "e"]
 
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor  = "#303030"
@@ -68,8 +68,10 @@ scratchpads =
 	, NS "cmus" (myTerminal ++ " -name cmus -e cmus") (appName =? "cmus") big
 	, NS "mixer" (myTerminal ++ " -name mixer -e alsamixer") (appName =? "mixer") big
 	, NS "agenda" (myTerminal ++ " -name agenda -e vim ~/agenda.txt") (appName =? "agenda") big
+	, NS "psi" "psi-plus" (title =? "Psi+") huge
 	] where
 		big = customFloating $ W.RationalRect (1/10) (1/10) (4/5) (4/5)
+		huge = customFloating $ W.RationalRect 0 (1/73) 1 (72/73)
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -131,6 +133,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 		, ((modm              , xK_p     ), namedScratchpadAction scratchpads "cmus")
 		, ((modm .|. shiftMask, xK_m     ), namedScratchpadAction scratchpads "mixer")
 		, ((modm              , xK_a     ), namedScratchpadAction scratchpads "agenda")
+		, ((modm              , xK_s     ), namedScratchpadAction scratchpads "psi")
 		-- scrot
 		, ((modm              , xK_Print ), spawn "scrot")
     ]
@@ -140,7 +143,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     ++
     [((m .|. modm, k), windows $ f i)
         -- | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
-        | (i, k) <- zip (XMonad.workspaces conf) [xK_1, xK_2, xK_3, xK_q, xK_w, xK_e, xK_s]
+        | (i, k) <- zip (XMonad.workspaces conf) [xK_1, xK_2, xK_3, xK_q, xK_w, xK_e]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
@@ -193,12 +196,10 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	, className =? "Chromium"       --> doShift "e"
 	, title     =? "Chromium Preferences" --> doFloat
 	, className =? "Firefox"        --> doShift "e"
-	, className =? "psi"            --> doShift "s"
-	, className =? "Psi-plus"       --> doShift "s"
+	, title     =? "Firefox Preferences" --> doFloat
 	, className =? "feh"            --> doFullFloat
 	, (appName =? "event" <&&> className =? "psi") --> doFloat
 	, title     =? "agenda"         --> doFloat
-	{-, appName =? "Gemini_Rue.exe"   --> doIgnore-}
 	] <+> manageHook defaultConfig
 
 ------------------------------------------------------------------------
