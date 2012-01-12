@@ -68,7 +68,7 @@ scratchpads =
 	, NS "cmus" (myTerminal ++ " -name cmus -e cmus") (appName =? "cmus") big
 	, NS "mixer" (myTerminal ++ " -name mixer -e alsamixer") (appName =? "mixer") big
 	, NS "agenda" (myTerminal ++ " -name agenda -e vim ~/agenda.txt") (appName =? "agenda") big
-	, NS "psi" "psi-plus" (title =? "Psi+") huge
+	, NS "psi" "psi-plus" (className =? "psi") huge
 	] where
 		big = customFloating $ W.RationalRect (1/10) (1/10) (4/5) (4/5)
 		huge = customFloating $ W.RationalRect 0 (1/73) 1 (72/73)
@@ -267,7 +267,7 @@ main = do
 		" -e 'button1=togglecollapse;'")
 	spawn "conky -t '$cpu' | ~/.dzen/graph.py -rOo ~/.dzen/cpugraph.out"
 
-	spawn "sleep 0.2; xxkb"
+	spawn "sleep 1; xxkb"
 
 	xmonad defaultConfig {
 		-- simple stuff
