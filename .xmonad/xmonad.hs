@@ -232,7 +232,7 @@ myLayoutIcon layout = dzenColor orange "" (icon layout)
 			) layout ++ ")"
 
 myPPTitle "" = ""
-myPPTitle title = dzenColor green "" (" " ++ shorten 90 title)
+myPPTitle title = dzenColor green "" (" " ++ shorten 120 title)
 
 myLogHook h = dynamicLogWithPP $ defaultPP
 	{ ppCurrent  = dzenColor green bg_dark . pad
@@ -262,8 +262,8 @@ myStartupHook = return ()
 ------------------------------------------------------------------------
 -- running it
 main = do
-	h <- spawnPipe (dzenCmd ++ " -e - -w 700 -ta l")
-	spawn ("conky | " ++ dzenCmd ++ " -x 700 -tw 580 -ta r -sa r -l 1" ++
+	h <- spawnPipe (dzenCmd ++ " -e - -w 1000 -ta l")
+	spawn ("conky | " ++ dzenCmd ++ " -x 1000 -tw 920 -ta r -sa r -l 1" ++
 		" -e 'button1=togglecollapse;'")
 	spawn "conky -t '$cpu' | ~/.dzen/graph.py -rOo ~/.dzen/cpugraph.out"
 
