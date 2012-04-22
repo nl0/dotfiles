@@ -5,7 +5,7 @@ hgshelve=~/.hgext/hgshelve/hgshelve.py
 purge=
 
 [ui]
-username=nl_0
+username=nl_0 <nl.imbecile@gmail.com>
 merge = vimdiff
 
 [merge-tools]
