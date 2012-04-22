@@ -2,8 +2,8 @@
 import os
 
 updaters = (
-    ('pkg', "sudo yaourt -Syu"),
-    ('aur', 'sudo yaourt -Sua'),
+    ('pkg', "yaourt -Syu"),
+    ('aur', 'yaourt -Sua'),
     #('vundle',
     ('npm', "sudo npm up -g"),
 )
