@@ -23,7 +23,7 @@ shopt -s autocd
 #set -o vi
 
 if [ -n "$DISPLAY" ]; then
-	export BROWSER=chromium
+	export BROWSER=firefox
 fi
 
 export EDITOR=vim
