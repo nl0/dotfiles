@@ -6,4 +6,9 @@ purge=
 
 [ui]
 username=nl_0
+merge = vimdiff
+
+[merge-tools]
+vimdiff.executable = vim
+vimdiff.args = -d -c "wincmd J" "$output" "$local" "$other" "$base"
 
