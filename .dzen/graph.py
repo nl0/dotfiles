@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 import argparse
+import math
 import sys
 from collections import deque
 
@@ -29,7 +30,7 @@ parser.add_argument('-O', '--overwrite', action='store_true')
 def format(seq, opts):
     res = ''
     for i in q:
-        h = round(i/opts.max*opts.height)
+        h = math.ceil(i/opts.max*opts.height)
         for k, v in opts.colors.items():
             if i>=k: c = v
         if not opts.center:
