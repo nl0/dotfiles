@@ -55,6 +55,10 @@ map <leader>tn :tabnew<cr>
 map <leader>te :tabedit<space>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove<space>
+map <M-l> gt
+map! <M-l> <Esc>gt
+map <M-h> gT
+map! <M-h> <Esc>gT
 
 " moving btw windows
 map <C-j> <C-W>j
