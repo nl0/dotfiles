@@ -14,6 +14,7 @@ let mapleader = ","
 let g:mapleader = ","
 
 " common cmd shortcuts
+nmap <leader>e :e<space>
 nmap <leader>w :w!<cr>
 nmap <leader>q :q<cr>
 nmap <leader>Q :qa<cr>
@@ -21,7 +22,7 @@ nmap <leader>Q :qa<cr>
 nmap <leader>W :%!sudo tee > /dev/null %<CR>
 
 " vimrc
-map <leader>rc :e! ~/.vimrc<cr>
+map <leader>rc :tabe ~/.vimrc<cr>
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " default indent
@@ -55,17 +56,12 @@ map <leader>tn :tabnew<cr>
 map <leader>te :tabedit<space>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove<space>
-"map <M-l> gt
-"map! <M-l> <Esc>gt
-"map <M-h> gT
-"map! <M-h> <Esc>gT
+map <M-l> gt
+map! <M-l> <Esc>gt
+map <M-h> gT
+map! <M-h> <Esc>gT
 
 " buffers
-map <leader>e :e!<space>
-map <M-l> :bn!<cr>
-map! <M-l> <Esc>:bn!<cr>
-map <M-h> :bp!<cr>
-map! <M-h> <Esc>:bp!<cr>
 nmap <leader>d :bd<cr>
 nmap <leader>D :bd!<cr>
 
@@ -148,7 +144,7 @@ Bundle 'vim-stylus'
 "Bundle 'Zenburn'
 Bundle 'SuperTab'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'fholgado/minibufexpl.vim'
+"Bundle 'fholgado/minibufexpl.vim'
 
 filetype plugin indent on " required!
 
