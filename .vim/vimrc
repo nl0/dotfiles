@@ -21,7 +21,7 @@ nmap <leader>Q :qa<cr>
 nmap <leader>W :%!sudo tee > /dev/null %<CR>
 
 " vimrc
-map <leader>rc :tabedit ~/.vimrc<cr>
+map <leader>rc :e! ~/.vimrc<cr>
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " default indent
@@ -55,20 +55,25 @@ map <leader>tn :tabnew<cr>
 map <leader>te :tabedit<space>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove<space>
-map <M-l> gt
-map! <M-l> <Esc>gt
-map <M-h> gT
-map! <M-h> <Esc>gT
+"map <M-l> gt
+"map! <M-l> <Esc>gt
+"map <M-h> gT
+"map! <M-h> <Esc>gT
+
+" buffers
+map <leader>e :e!<space>
+map <M-l> :bn!<cr>
+map! <M-l> <Esc>:bn!<cr>
+map <M-h> :bp!<cr>
+map! <M-h> <Esc>:bp!<cr>
+nmap <leader>d :bd<cr>
+nmap <leader>D :bd!<cr>
 
 " moving btw windows
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
-
-" wrk w/ bufs
-map <leader>bd :bd<cr>
-" TODO: moving
 
 " <leader>cd switches to the directory of the current buffer
 map <leader>cd :cd %:p:h<cr>
@@ -138,15 +143,12 @@ call vundle#rc()
 " required!
 Bundle 'gmarik/vundle'
 
-"Bundle 'tpope/vim-haml'
-"Bundle 'pangloss/vim-javascript'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'wavded/vim-stylus'
+Bundle 'vim-coffee-script'
+Bundle 'vim-stylus'
 "Bundle 'Zenburn'
-Bundle 'TaskList.vim'
-Bundle 'ervandew/supertab'
-Bundle 'groenewege/vim-less'
+Bundle 'SuperTab'
 Bundle 'scrooloose/nerdcommenter'
+Bundle 'fholgado/minibufexpl.vim'
 
 filetype plugin indent on " required!
 
@@ -166,16 +168,16 @@ let xml_use_xhtml = 1
 let xml_no_html = 1
 
 " less css
-function Lessc_compile ()
-	let nam = expand('<afile>:r')
-	exe "!lessc <afile> > ".nam.".css"
-endfunction
-au BufNewFile,BufRead *.less set filetype=less
-au FileType less set omnifunc=csscomplete#CompleteCSS
-au FileWritePost,BufWritePost *.less :call Lessc_compile()
+"function Lessc_compile ()
+	"let nam = expand('<afile>:r')
+	"exe "!lessc <afile> > ".nam.".css"
+"endfunction
+"au BufNewFile,BufRead *.less set filetype=less
+"au FileType less set omnifunc=csscomplete#CompleteCSS
+"au FileWritePost,BufWritePost *.less :call Lessc_compile()
 
 " coffee-script
-au BufWritePost,FileWritePost *.coffee !coffee -c <afile>
+"au BufWritePost,FileWritePost *.coffee !coffee -c <afile>
 
 " tabs <-> spaces
 :command! -range=% -nargs=0 Tab2Space execute '<line1>,<line2>s#^\t\+#\=repeat(" ", len(submatch(0))*' . &ts . ')'
