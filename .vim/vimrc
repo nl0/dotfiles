@@ -156,6 +156,15 @@ filetype plugin indent on " required!
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
 
+" spelling
+set spelllang=ru_yo,en_us
+
+" russian keymap
+set keymap=russian-jcukenwin
+set iminsert=0
+set imsearch=0
+highlight lCursor guifg=NONE guibg=Cyan
+
 " python
 let python_highlihgt_all = 1
 
