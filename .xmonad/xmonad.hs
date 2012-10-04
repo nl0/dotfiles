@@ -59,8 +59,8 @@ myModMask       = mod4Mask
 myWorkspaces = ["1", "2", "3", "q", "w", "e"]
 
 -- Border colors for unfocused and focused windows, respectively.
-myNormalBorderColor  = "#303030"
-myFocusedBorderColor = "#30c030"
+myNormalBorderColor  = bg_dark
+myFocusedBorderColor = green
 
 scratchpads =
 	[ NS "htop" (myTerminal ++ " -e htop") (title =? "htop") big
