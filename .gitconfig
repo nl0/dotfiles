@@ -1,10 +1,14 @@
+[color]
+	ui = true
+
 [user]
 	email = nl.imbecile@gmail.com
 	name = nl_0
 
 [alias]
 	a = add
-	chunkyadd = add --patch # stage commits chunk by chunk
+	aa = add --all
+	ap = add --patch # stage commits chunk by chunk
 
 	b = branch -v # branch (verbose)
 
