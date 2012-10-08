@@ -8,7 +8,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Tabbed
 import XMonad.Util.Run -- (spawnPipe, hPutStrLn)
 import XMonad.Util.Loggers
-import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Util.EZConfig(mkKeymap)
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare
 import System.IO
@@ -37,6 +37,7 @@ myFocusFollowsMouse = True
 myBorderWidth = 1
 
 myModMask = mod4Mask
+myModMaskP = "M4-"
 
 myWorkspaces = ["1", "2", "3", "q", "w", "e", "s"]
 
@@ -56,123 +57,104 @@ scratchpads =
 		huge = customFloating $ W.RationalRect 0 (1/73) 1 (72/73)
 
 
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
-	-- launch a terminal
-	[ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
-	-- launch dmenu
-	, ((modm,               xK_r     ), spawn $ "dmenu_run -fn " ++ myFont)
-	-- close focused window
-	, ((modm .|. shiftMask, xK_c     ), kill)
-	-- Rotate through the available layout algorithms
-	, ((modm,               xK_space ), sendMessage NextLayout)
-	--  Reset the layouts on the current workspace to default
-	, ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
-	-- Resize viewed windows to the correct size
-	, ((modm,               xK_n     ), refresh)
-	-- Move focus to the next/prev window
-	, ((modm,               xK_Tab   ), windows W.focusDown)
-	, ((modm,               xK_j     ), windows W.focusDown)
-	, ((modm,               xK_k     ), windows W.focusUp  )
-	-- Move focus to the master window
-	, ((modm,               xK_m     ), windows W.focusMaster  )
-	-- Swap the focused window and the master window
-	, ((modm,               xK_Return), windows W.shiftMaster)
-	-- Swap the focused window with the next/prev window
-	, ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
-	, ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
-	-- Shrink/expand the master area
-	, ((modm,               xK_h     ), sendMessage Shrink)
-	, ((modm,               xK_l     ), sendMessage Expand)
-	-- Push window back into tiling
-	, ((modm,               xK_t     ), withFocused $ windows . W.sink)
-	-- Increment/decrement the number of windows in the master area
-	, ((modm              , xK_comma ), sendMessage (IncMasterN 1))
-	, ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-	-- Toggle the status bar gap
-	-- Use this binding with avoidStruts from Hooks.ManageDocks.
-	-- See also the statusBar function from Hooks.DynamicLog.
-	, ((modm .|. shiftMask, xK_b     ), sendMessage ToggleStruts)
-	-- quit xmonad
-	, ((modm .|. controlMask, xK_q   ), io (exitWith ExitSuccess))
-	-- restart xmonad
-	, ((modm .|. shiftMask, xK_r     ), spawn "killall conky xxkb; xmonad --restart")
-	-- recompile and restart xmonad
-	, ((modm .|. controlMask, xK_r   ), spawn "killall conky xxkb; xmonad --recompile; xmonad --restart")
-	-- cmus controls
-	, ((modm              , xK_z     ), spawn "cmus-remote -r")
-	, ((modm              , xK_x     ), spawn "cmus-remote -p")
-	, ((modm              , xK_c     ), spawn "cmus-remote -u")
-	, ((modm              , xK_v     ), spawn "cmus-remote -s")
-	, ((modm              , xK_b     ), spawn "cmus-remote -n")
-	-- alsa volume controls
-	, ((modm              , xK_minus ), spawn "amixer set Master playback 1-")
-	, ((modm              , xK_equal ), spawn "amixer set Master playback 1+")
+myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
+	[ ("S-<Return>", spawn $ XMonad.terminal conf) -- launch a terminal
+	, ("r", spawn $ "dmenu_run -fn " ++ myFont) -- launch dmenu
+
+	, ("S-c", kill) -- close focused window
+	, ("<Space>", sendMessage NextLayout) -- cycle layout algorithms
+	, ("S-<Space>", setLayout $ XMonad.layoutHook conf) -- reset layout
+	, ("n", refresh) -- resize viewed windows to the correct size
+	, ("<Tab>", windows W.focusDown) -- next window
+	, ("j", windows W.focusDown) -- next window
+	, ("k", windows W.focusUp) -- prev window
+	, ("m", windows W.focusMaster) -- focus master window
+	, ("<Return>", windows W.shiftMaster) -- swap focused w/ master
+	, ("S-j", windows W.swapDown) -- swap focused w/ next
+	, ("S-k", windows W.swapUp) -- swap focused w/ prev
+	, ("h", sendMessage Shrink) -- shrink the master area
+	, ("l", sendMessage Expand) -- expand the master area
+	, ("t", withFocused $ windows . W.sink) -- push window back into tiling
+	, (",", sendMessage $ IncMasterN 1) -- increment the number of windows in the master area
+	, (".", sendMessage $ IncMasterN (-1)) -- decrement the number of windows in the master area
+	, ("S-b", sendMessage ToggleStruts) -- toggle the status bar gap
+
+	, ("C-q", io $ exitWith ExitSuccess) -- quit
+	, ("S-r", spawn "killall conky xxkb; xmonad --restart") -- restart
+	, ("C-r", spawn "killall conky xxkb; xmonad --recompile && xmonad --restart") -- recompile and restart
+
+	-- cmus
+	, ("z", spawn "cmus-remote -r")
+	, ("x", spawn "cmus-remote -p")
+	, ("c", spawn "cmus-remote -u")
+	, ("v", spawn "cmus-remote -s")
+	, ("b", spawn "cmus-remote -n")
+
+	-- master volume
+	, ("-", spawn "amixer set Master playback 1-")
+	, ("=", spawn "amixer set Master playback 1+")
+
 	-- scratchpads
-	, ((modm              , xK_grave ), namedScratchpadAction scratchpads "scratch")
-	, ((mod1Mask .|. controlMask, xK_Delete ), namedScratchpadAction scratchpads "htop")
-	, ((modm              , xK_p     ), namedScratchpadAction scratchpads "cmus")
-	, ((modm .|. shiftMask, xK_m     ), namedScratchpadAction scratchpads "mixer")
-	-- , ((modm              , xK_a     ), namedScratchpadAction scratchpads "agenda")
-	-- , ((modm              , xK_s     ), namedScratchpadAction scratchpads "psi")
-	-- scrot
-	, ((modm              , xK_Print ), spawn "scrot")
+	, ("`", namedScratchpadAction scratchpads "scratch")
+	, ("C-<Delete>", namedScratchpadAction scratchpads "htop")
+	, ("p", namedScratchpadAction scratchpads "cmus")
+	, ("S-m", namedScratchpadAction scratchpads "mixer")
+
+	, ("<Print>", spawn "scrot") -- scrot
 	]
 	++
-	[((m .|. modm, k), windows $ f i)
-		| (i, k) <- zip (XMonad.workspaces conf) [xK_1, xK_2, xK_3, xK_q, xK_w, xK_e, xK_s]
-		, (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-	-- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-	-- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-	--
-	{-++-}
-	{-[((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))-}
-		{-| (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]-}
-		{-, (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]-}
+	-- workspaces
+	[(mask ++ key, windows $ action workspace)
+		| (workspace, key) <- zip (XMonad.workspaces conf) myWorkspaces
+		, (action, mask) <- [(W.greedyView, ""), (W.shift, "S-")]
+	]
+	-- screens
+	{-
+	++
+	[(mask ++ key, screenWorkspace screen >>= flip whenJust (windows . action))
+		| (key, screen) <- zip ["<F1>", "<F2>"] [0..]
+		, (action, mask) <- [(W.view, ""), (W.shift, "S-")]
+	]
+	-}
 
 
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
-	-- mod-button1, Set the window to floating mode and move by dragging
+	-- mod-left: set the window to floating mode and move by dragging
 	[ ((modm, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster))
-	-- mod-button2, Raise the window to the top of the stack
+	-- mod-middle: raise the window to the top of the stack
 	, ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
-	-- mod-button3, Set the window to floating mode and resize by dragging
+	-- mod-right: set the window to floating mode and resize by dragging
 	, ((modm, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
-	-- you may also bind events to the mouse scroll wheel (button4 and button5)
 	]
 
 
--- myLayout = smartBorders ( avoidStruts ( tiled ||| Mirror tiled ||| Full ) )
 myLayout = smartBorders $ avoidStruts $ tiled ||| Mirror tiled ||| Full
 	where
-		-- default tiling algorithm partitions the screen into two panes
 		tiled = Tall nmaster delta ratio
-		-- The default number of windows in the master pane
-		nmaster = 1
-		-- Default proportion of screen occupied by master pane
-		ratio = 6/10
-		-- Percent of screen to increment by when resizing panes
-		delta = 2/100
+		nmaster = 1 -- default number of windows in the master pane
+		ratio = 6/10 -- default proportion of screen occupied by master pane
+		delta = 2/100 -- percent of screen to increment by when resizing panes
 
 
 myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> composeAll
-	[ className =? "MPlayer"        --> doFloat
-	, className =? "Vlc"            --> doFloat
-	, appName   =? "XXkb"           --> doIgnore
-	, appName   =? "desktop_window" --> doIgnore
-	, appName   =? "kdesktop"       --> doIgnore
-	-- , appName   =? "gens"           --> doFloat
-	-- , className =? "Exe"            --> doIgnore
+	[ className =? "MPlayer" --> doFloat
+	, className =? "Vlc" --> doFloat
+	, appName =? "XXkb" --> doIgnore
+	, appName =? "desktop_window" --> doIgnore
+	, appName =? "kdesktop" --> doIgnore
+	-- , appName =? "gens" --> doFloat
+	-- , className =? "Exe" --> doIgnore
 	, className =? "Plugin-container" --> doIgnore
-	, className =? "Xmessage"       --> doFloat
-	, className =? "Chromium"       --> doShift "e"
-	, title     =? "Chromium Preferences" --> doFloat
-	, className =? "Firefox"        --> doShift "e"
-	, title     =? "Firefox Preferences" --> doFloat
-	, className =? "feh"            --> doFullFloat
+	, className =? "Xmessage" --> doFloat
+	, className =? "Chromium" --> doShift "e"
+	, title =? "Chromium Preferences" --> doFloat
+	, className =? "Firefox" --> doShift "e"
+	, title =? "Firefox Preferences" --> doFloat
+	, className =? "feh" --> doFullFloat
 	, (appName =? "event" <&&> className =? "psi") --> doFloat
-	, className =? "Psi-plus"       --> doShift "s"
-	, className =? "psi"            --> doShift "s"
-	-- , title     =? "agenda"         --> doFloat
+	, className =? "Psi-plus" --> doShift "s"
+	, className =? "psi" --> doShift "s"
+	-- , title =? "agenda" --> doFloat
 	] <+> manageHook defaultConfig
 
 
@@ -185,18 +167,14 @@ myEventHook = mempty
 
 
 -- Status bars and logging
-myLayoutIcon layout = dzenColor orange "" (icon layout)
-	where
-		icon layout =
-			"^i(/home/nl/icons/layouts/" ++
-			(\x -> case x of
-				"Tall"            -> "tall.xbm"
-				"Mirror Tall"     -> "tall_mirr.xbm"
-				"Full"            -> "full.xbm"
-			) layout ++ ")"
+myLayoutIcon = dzenColor orange "" . getIcon
+	where getIcon layout = "^i(/home/nl/icons/layouts/" ++ icon ++ ")"
+		where icon = case layout of
+			"Tall" -> "tall.xbm"
+			"Mirror Tall" -> "tall_mirr.xbm"
+			"Full" -> "full.xbm"
 
 myPPTitle "" = ""
--- myPPTitle title = dzenColor green "" (" " ++ shorten 120 title)
 myPPTitle title = dzenColor green "" $ " " ++ shorten 120 title
 
 myLogHook h = dynamicLogWithPP $ defaultPP
