@@ -52,6 +52,7 @@ scratchpads =
 	, NS "mixer" (myTerminal ++ " -name mixer -e alsamixer") (appName =? "mixer") big
 	-- , NS "agenda" (myTerminal ++ " -name agenda -e vim ~/agenda.txt") (appName =? "agenda") big
 	-- , NS "psi" "psi-plus" (className =? "Psi-plus") huge
+	, NS "transmission" "transmission-qt" (title =? "Transmission") huge
 	] where
 		big = customFloating $ W.RationalRect (1/10) (1/10) (4/5) (4/5)
 		huge = customFloating $ W.RationalRect 0 (1/73) 1 (72/73)
@@ -99,6 +100,7 @@ myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
 	, ("C-<Delete>", namedScratchpadAction scratchpads "htop")
 	, ("p", namedScratchpadAction scratchpads "cmus")
 	, ("S-m", namedScratchpadAction scratchpads "mixer")
+	, ("S-t", namedScratchpadAction scratchpads "transmission")
 
 	, ("<Print>", spawn "scrot") -- scrot
 	]
