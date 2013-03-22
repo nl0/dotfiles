@@ -15,7 +15,7 @@ let g:mapleader = ","
 
 " common cmd shortcuts
 nmap <leader>e :e<space>
-nmap <leader>w :w!<cr>
+nmap <leader>w :w<cr>
 nmap <leader>q :q<cr>
 nmap <leader>Q :qa<cr>
 " save file with root permissions"
@@ -27,8 +27,10 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " default indent
 set tabstop=2
+set softtabstop=2
 set shiftwidth=2
 set autoindent
+set expandtab
 
 " scrolloff
 set scrolloff=100
@@ -122,7 +124,8 @@ nmap <leader>nn :setl nu<cr>
 set directory=~/.vim/tmp
 
 " trailing whitespace trimming
-autocmd BufWritePre * %s/\s\+$//e
+"autocmd BufWritePre * %s/\s\+$//e
+nmap <leader>S :%s/\s\+$//e<cr>
 
 set backspace=indent,eol,start
 
@@ -139,8 +142,8 @@ Bundle 'vim-coffee-script'
 Bundle 'vim-stylus'
 "Bundle 'Zenburn'
 Bundle 'scrooloose/nerdcommenter'
-"Bundle 'fholgado/minibufexpl.vim'
 Bundle 'digitaltoad/vim-jade'
+Bundle 'groenewege/vim-less'
 Bundle 'Valloric/YouCompleteMe'
 
 filetype plugin indent on " required!
