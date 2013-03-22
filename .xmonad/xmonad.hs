@@ -53,9 +53,11 @@ scratchpads =
 	-- , NS "agenda" (myTerminal ++ " -name agenda -e vim ~/agenda.txt") (appName =? "agenda") big
 	-- , NS "psi" "psi-plus" (className =? "Psi-plus") huge
 	, NS "transmission" "transmission-qt" (title =? "Transmission") huge
+	, NS "odesk" "odeskteam-qt4" (title =? "oDesk Team Room") small
 	] where
 		big = customFloating $ W.RationalRect (1/10) (1/10) (4/5) (4/5)
 		huge = customFloating $ W.RationalRect 0 (1/73) 1 (72/73)
+		small = customFloating $ W.RationalRect (2/5) (1/5) (1/5) (1/5)
 
 
 myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
@@ -101,6 +103,7 @@ myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
 	, ("p", namedScratchpadAction scratchpads "cmus")
 	, ("S-m", namedScratchpadAction scratchpads "mixer")
 	, ("S-t", namedScratchpadAction scratchpads "transmission")
+	, ("C-t", namedScratchpadAction scratchpads "odesk")
 
 	, ("<Print>", spawn "scrot") -- scrot
 	]
@@ -157,6 +160,7 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	, className =? "Psi-plus" --> doShift "s"
 	, className =? "psi" --> doShift "s"
 	-- , title =? "agenda" --> doFloat
+	, className =? "Odeskteam-qt4" --> doFloat
 	] <+> manageHook defaultConfig
 
 
