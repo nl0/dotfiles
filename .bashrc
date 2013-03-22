@@ -18,6 +18,7 @@ alias ssh='TERM=$COLORTERM ssh'
 alias cr='cmus-remote'
 alias mc='PAGER=vim mc'
 alias kc='eval $(keychain --eval --agents ssh -Q --quiet id_rsa)'
+alias sys='sudo systemctl'
 
 shopt -s autocd
 #set -o vi
