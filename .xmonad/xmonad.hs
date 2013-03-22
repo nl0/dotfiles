@@ -157,8 +157,8 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	, title =? "Firefox Preferences" --> doFloat
 	, className =? "feh" --> doFullFloat
 	, (appName =? "event" <&&> className =? "psi") --> doFloat
+	, className =? "psi+" --> doShift "s"
 	, className =? "Psi-plus" --> doShift "s"
-	, className =? "psi" --> doShift "s"
 	-- , title =? "agenda" --> doFloat
 	, className =? "Odeskteam-qt4" --> doFloat
 	] <+> manageHook defaultConfig
