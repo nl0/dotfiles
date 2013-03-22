@@ -86,6 +86,9 @@ myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
 	, ("S-r", spawn "killall conky xxkb; xmonad --restart") -- restart
 	, ("C-r", spawn "killall conky xxkb; xmonad --recompile && xmonad --restart") -- recompile and restart
 
+	-- unmount devices
+	, ("] u", spawn $ "unmount -fn " ++ myFont)
+
 	-- cmus
 	, ("z", spawn "cmus-remote -r")
 	, ("x", spawn "cmus-remote -p")

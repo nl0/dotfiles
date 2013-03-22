@@ -1,0 +1,5 @@
+#!/bin/sh
+
+dev=`ls /media/ | dmenu -i -p 'unmount:' "$@"`
+[ -n "$dev" ] && udiskie-umount -s /media/"$dev"
+
