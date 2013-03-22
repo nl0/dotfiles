@@ -1,4 +1,4 @@
-PATH="$HOME/bin:$PATH"
+PATH="$HOME/bin:$HOME/.gem/ruby/1.9.1/bin:$PATH"
 
 # Check for an interactive session
 [ -z "$PS1" ] && return
