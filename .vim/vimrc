@@ -91,14 +91,10 @@ set cursorcolumn
 set cursorline
 
 " completeion
-inoremap <c-space> <c-x><c-n>
 set completeopt=menu,longest
-" supertab
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
-let g:SuperTabMidWordCompletion = 0
-let g:SuperTabLongestEnhanced = 1
-let g:SuperTabLongestHighlight = 1
-let g:SuperTabCrMapping = 0
+
+" ycm
+let g:ycm_key_detailed_diagnostics = ''
 
 " cmd tab-completeion
 set wildmode=longest,list
@@ -142,10 +138,10 @@ Bundle 'gmarik/vundle'
 Bundle 'vim-coffee-script'
 Bundle 'vim-stylus'
 "Bundle 'Zenburn'
-Bundle 'SuperTab'
 Bundle 'scrooloose/nerdcommenter'
 "Bundle 'fholgado/minibufexpl.vim'
 Bundle 'digitaltoad/vim-jade'
+Bundle 'Valloric/YouCompleteMe'
 
 filetype plugin indent on " required!
 
