@@ -27,8 +27,8 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " default indent
 set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set softtabstop=-1
+set shiftwidth=0
 set autoindent
 set expandtab
 
@@ -145,6 +145,7 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'groenewege/vim-less'
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'gkz/vim-ls'
 
 filetype plugin indent on " required!
 
