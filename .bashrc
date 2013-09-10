@@ -28,4 +28,3 @@ if [ -n "$DISPLAY" ]; then
 fi
 
 export EDITOR=vim
-

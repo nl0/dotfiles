@@ -55,4 +55,3 @@ if __name__=='__main__':
         out.write('^fg()^pa()'+opts.prefix+format(q, opts)+
             '^fg()^pa()'+opts.suffix+'\n')
         out.flush()
-
