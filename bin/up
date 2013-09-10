@@ -5,7 +5,7 @@ updaters = (
     ('pkg', "yaourt -Syu"),
     ('aur', 'yaourt -Sua'),
     #('vundle',
-    ('npm', "sudo npm up -g"),
+    ('npm', "sudo npm up -qg"),
 )
 
 def up(*args):
