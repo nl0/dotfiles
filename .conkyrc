@@ -7,7 +7,7 @@ out_to_x no
 TEXT
 ^tw()${exec cmus-remote -Q 2>/dev/null | cmus-stat}\
    \
-^tw()${time %H:%M:%S}    \
+^tw()${time %H:%M:%S} \
 
 ^fg(\#c03030)^i(/home/nl/icons/monitors/up.xbm)$upspeed\
  ^fg(\#30c030)$downspeed^i(/home/nl/icons/monitors/dn.xbm)\
@@ -20,8 +20,7 @@ TEXT
    \
 ^fg(\#c07730)^i(/home/nl/icons/monitors/hdd.xbm)^fg()\
  /:^fg(\#30c030)$fs_free^fg()/$fs_size\
- /var:^fg(\#30c030)${fs_free /var}^fg()/${fs_size /var}\
+ /storage:^fg(\#30c030)${fs_free /storage}^fg()/${fs_size /storage}\
    \
 ^fg(\#30c030)[$uptime_short]^fg() \
 ^fg()${time %Y-%m-%d [%u]} \
-

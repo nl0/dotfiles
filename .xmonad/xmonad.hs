@@ -2,6 +2,7 @@ import XMonad
 import Data.Monoid
 import System.Exit
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.DynamicBars
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Layout.NoBorders
@@ -18,31 +19,35 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
 
--- colors
-bg_dark = "#202020"
-bg_light = "#303030"
-fg_dark = "#808080"
-fg_light = "#c0c0c0"
-green = "#30c030"
-red = "#c03030"
-orange = "#c07730"
+data MyTheme = MyTheme
+	{ bgNormal :: String
+	, bgCurrent :: String
+	, fgInactive :: String
+	, fgNormal :: String
+	, fgCurrent :: String
+	, fgAlternate :: String
+	, fgHighlight :: String
+	, font :: String
+	}
 
-myFont = "-*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*"
+myTheme = MyTheme
+	{ bgNormal = "#303030"
+	, bgCurrent = "#202020"
+	, fgInactive = "#808080"
+	, fgNormal = "#c0c0c0"
+	, fgCurrent = "#30c030"
+	, fgAlternate = "#c07730"
+	, fgHighlight = "#c03030"
+	, font = "-*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*"
+	}
+
 
 myTerminal = "urxvt"
-
-myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
-
-myBorderWidth = 1
 
 myModMask = mod4Mask
 myModMaskP = "M4-"
 
 myWorkspaces = ["1", "2", "3", "q", "w", "e", "s"]
-
-myNormalBorderColor  = bg_dark
-myFocusedBorderColor = green
 
 
 scratchpads =
@@ -60,9 +65,12 @@ scratchpads =
 		small = customFloating $ W.RationalRect (2/5) (1/5) (1/5) (1/5)
 
 
+dmenuOpts :: String
+dmenuOpts = printf "-fn %s -nb '%s' -nf '%s' -sb '%s' -sf '%s'" (font myTheme) (bgNormal myTheme) (fgNormal myTheme) (bgCurrent myTheme) (fgCurrent myTheme)
+
 myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
 	[ ("S-<Return>", spawn $ XMonad.terminal conf) -- launch a terminal
-	, ("r", spawn $ "dmenu_run -fn " ++ myFont) -- launch dmenu
+	, ("r", spawn $ "dmenu_run " ++ dmenuOpts) -- launch dmenu
 
 	, ("S-c", kill) -- close focused window
 	, ("<Space>", sendMessage NextLayout) -- cycle layout algorithms
@@ -83,11 +91,11 @@ myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
 	, ("S-b", sendMessage ToggleStruts) -- toggle the status bar gap
 
 	, ("C-q", io $ exitWith ExitSuccess) -- quit
-	, ("S-r", spawn "killall conky xxkb; xmonad --restart") -- restart
-	, ("C-r", spawn "killall conky xxkb; xmonad --recompile && xmonad --restart") -- recompile and restart
+	, ("S-r", spawn "xmonad --restart") -- restart
+	, ("C-r", spawn "xmonad --recompile && xmonad --restart") -- recompile and restart
 
 	-- unmount devices
-	, ("] u", spawn $ "unmount -fn " ++ myFont)
+	, ("] u", spawn $ "unmount " ++ dmenuOpts)
 
 	-- cmus
 	, ("z", spawn "cmus-remote -r")
@@ -117,13 +125,11 @@ myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
 		, (action, mask) <- [(W.greedyView, ""), (W.shift, "S-")]
 	]
 	-- screens
-	{-
 	++
 	[(mask ++ key, screenWorkspace screen >>= flip whenJust (windows . action))
 		| (key, screen) <- zip ["<F1>", "<F2>"] [0..]
 		, (action, mask) <- [(W.view, ""), (W.shift, "S-")]
 	]
-	-}
 
 
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
@@ -136,7 +142,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 	]
 
 
-myLayout = smartBorders $ avoidStruts $ tiled ||| Mirror tiled ||| Full
+myLayout = smartBorders $ avoidStruts $ tiled ||| Mirror tiled ||| noBorders Full
 	where
 		tiled = Tall nmaster delta ratio
 		nmaster = 1 -- default number of windows in the master pane
@@ -146,6 +152,7 @@ myLayout = smartBorders $ avoidStruts $ tiled ||| Mirror tiled ||| Full
 
 myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> composeAll
 	[ className =? "MPlayer" --> doFloat
+	, className =? "mplayer2" --> doFloat
 	, className =? "Vlc" --> doFloat
 	, appName =? "XXkb" --> doIgnore
 	, appName =? "desktop_window" --> doIgnore
@@ -164,43 +171,8 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	, className =? "Psi-plus" --> doShift "s"
 	-- , title =? "agenda" --> doFloat
 	, className =? "Odeskteam-qt4" --> doFloat
+	, className =? "Qjackctl" --> doFloat
 	] <+> manageHook defaultConfig
-
-
--- Event handling
--- * EwmhDesktops users should change this to ewmhDesktopsEventHook
--- Defines a custom handler function for X Events. The function should
--- return (All True) if the default handler is to be run afterwards. To
--- combine event hooks use mappend or mconcat from Data.Monoid.
-myEventHook = mempty
-
-
--- Status bars and logging
-myLayoutIcon = dzenColor orange "" . getIcon
-	where getIcon layout = "^i(/home/nl/icons/layouts/" ++ icon ++ ")"
-		where icon = case layout of
-			"Tall" -> "tall.xbm"
-			"Mirror Tall" -> "tall_mirr.xbm"
-			"Full" -> "full.xbm"
-
-myPPTitle "" = ""
-myPPTitle title = dzenColor green "" $ " " ++ shorten 120 title
-
-myLogHook h = dynamicLogWithPP $ defaultPP
-	{ ppCurrent  = dzenColor green bg_dark . pad
-	, ppHidden   = dzenColor fg_light "" . pad
-	, ppHiddenNoWindows = dzenColor fg_dark  "" . pad
-	, ppUrgent   = dzenColor red "" . pad
-	, ppWsSep    = ""
-	, ppSep      = " "
-	, ppTitle    = myPPTitle
-	, ppLayout   = myLayoutIcon
-	, ppOutput   = hPutStrLn h
-	, ppSort     = fmap (.namedScratchpadFilterOutWorkspace) getSortByIndex
-	}
-
--- statusbars
-dzenCmd = printf "dzen2 -bg '%s' -fg '%s' -fn '%s'" bg_light fg_light myFont
 
 
 -- Startup hook
@@ -208,37 +180,88 @@ dzenCmd = printf "dzen2 -bg '%s' -fg '%s' -fn '%s'" bg_light fg_light myFont
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
 -- By default, do nothing.
-myStartupHook = return ()
+myStartupHook = do
+	spawn "conky -t '$cpu' | ~/.dzen/graph.py -rOo ~/.dzen/cpugraph.out"
+	dynStatusBarStartup mySB mySBCleanup
+	return ()
+
+
+mySB :: DynamicStatusBar
+mySB screen = do
+	h <- spawnPipe $ printf "%s -e - -w 1000 -ta l" (dzenCmd screen)
+	-- TODO: store pids in mvars and kill procs on cleanup
+	spawn $ printf "conky | %s -x 1000 -tw 900 -ta r -sa r -l 1 -e 'button1=togglecollapse;'" (dzenCmd screen)
+	spawn $ printf "(xkb-switch && xkb-switch -W) | sed -u 's#.*#^i(/home/nl/icons/lang/&.xpm)#' | %s -x 1900 -w 20 -e -" (dzenCmd screen)
+	return h
+
+mySBCleanup :: DynamicStatusBarCleanup
+mySBCleanup = do
+	spawn "killall xkb-switch"
+	return ()
+
+-- Event handling
+-- * EwmhDesktops users should change this to ewmhDesktopsEventHook
+-- Defines a custom handler function for X Events. The function should
+-- return (All True) if the default handler is to be run afterwards. To
+-- combine event hooks use mappend or mconcat from Data.Monoid.
+myEventHook = dynStatusBarEventHook mySB mySBCleanup
+
+
+-- Status bars and logging
+myLayoutIcon clr = dzenColor clr "" . getIcon
+	where getIcon layout = printf "^i(/home/nl/icons/layouts/%s)" icon
+		where icon = case layout of
+			"Tall" -> "tall.xbm"
+			"Mirror Tall" -> "tall_mirr.xbm"
+			"Full" -> "full.xbm"
+
+myPPTitle _ "" = ""
+myPPTitle clr title = dzenColor clr "" $ " " ++ shorten 120 title
+
+myFocusPP = defaultPP
+	{ ppCurrent = dzenColor (fgCurrent myTheme) (bgCurrent myTheme) . pad
+	, ppVisible = wrap "<" ">"
+	, ppHidden = dzenColor (fgNormal myTheme) "" . pad
+	, ppHiddenNoWindows = dzenColor (fgInactive myTheme) "" . pad
+	, ppUrgent = dzenColor (fgHighlight myTheme) "" . pad
+	, ppSep = " "
+	, ppWsSep = ""
+	, ppTitle = myPPTitle (fgCurrent myTheme)
+	, ppLayout = myLayoutIcon (fgAlternate myTheme)
+	, ppSort = fmap (.namedScratchpadFilterOutWorkspace) getSortByIndex
+	}
+
+myUnfocusPP = myFocusPP
+	{ ppCurrent = dzenColor (fgNormal myTheme) (bgCurrent myTheme) . pad
+	, ppHidden = dzenColor (fgNormal myTheme) "" . pad
+	, ppHiddenNoWindows = dzenColor (fgInactive myTheme) "" . pad
+	, ppUrgent = dzenColor (fgHighlight myTheme) "" . pad
+	, ppTitle = myPPTitle (fgNormal myTheme)
+	, ppLayout = myLayoutIcon (fgNormal myTheme)
+	}
+
+
+dzenCmd :: ScreenId -> String
+dzenCmd (S screenN) = printf "dzen2 -xs %d -bg '%s' -fg '%s' -fn '%s'" (screenN + 1) (bgNormal myTheme) (fgNormal myTheme) (font myTheme)
 
 
 -- running it
 main = do
-	h <- spawnPipe (dzenCmd ++ " -e - -w 1000 -ta l")
-	spawn ("conky | " ++ dzenCmd ++ " -x 1000 -tw 920 -ta r -sa r -l 1" ++
-		" -e 'button1=togglecollapse;'")
-	spawn "conky -t '$cpu' | ~/.dzen/graph.py -rOo ~/.dzen/cpugraph.out"
+	xmonad defaultConfig
+		{ terminal = myTerminal
+		, focusFollowsMouse = True
+		, borderWidth = 1
+		, modMask = myModMask
+		, workspaces = myWorkspaces
+		, normalBorderColor = bgCurrent myTheme
+		, focusedBorderColor = fgCurrent myTheme
 
-	spawn "sleep 1; xxkb"
+		, keys = myKeys
+		, mouseBindings = myMouseBindings
 
-	xmonad defaultConfig {
-		-- simple stuff
-		terminal = myTerminal,
-		focusFollowsMouse = myFocusFollowsMouse,
-		borderWidth = myBorderWidth,
-		modMask = myModMask,
-		workspaces = myWorkspaces,
-		normalBorderColor = myNormalBorderColor,
-		focusedBorderColor = myFocusedBorderColor,
-
-		-- key bindings
-		keys = myKeys,
-		mouseBindings = myMouseBindings,
-
-		-- hooks, layouts
-		layoutHook = myLayout,
-		manageHook = myManageHook,
-		handleEventHook = myEventHook,
-		logHook = myLogHook h,
-		startupHook = myStartupHook
-	}
-
+		, layoutHook = myLayout
+		, manageHook = myManageHook
+		, handleEventHook = myEventHook
+		, logHook = multiPP myFocusPP myUnfocusPP
+		, startupHook = myStartupHook
+		}
