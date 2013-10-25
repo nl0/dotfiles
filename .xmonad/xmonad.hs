@@ -170,6 +170,7 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	, className =? "psi+" --> doShift "s"
 	, className =? "Psi-plus" --> doShift "s"
 	-- , title =? "agenda" --> doFloat
+	, title =? "odeskteam-qt4" --> doShift "NSP"
 	, className =? "Odeskteam-qt4" --> doFloat
 	, className =? "Qjackctl" --> doFloat
 	] <+> manageHook defaultConfig
