@@ -3,8 +3,10 @@
 xsetroot -cursor_name left_ptr
 wallp &
 udiskie -s &
-jackd &
 kbdd
+
+jack_control start
+aloop &
 
 cd wiki && make &
 cd
