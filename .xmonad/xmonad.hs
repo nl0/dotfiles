@@ -54,11 +54,13 @@ scratchpads =
 	[ NS "htop" (myTerminal ++ " -e htop") (title =? "htop") big
 	, NS "scratch" (myTerminal ++ " -name scratch") (appName =? "scratch") big
 	, NS "cmus" (myTerminal ++ " -name cmus -e cmus") (appName =? "cmus") big
-	, NS "mixer" (myTerminal ++ " -name mixer -e alsamixer") (appName =? "mixer") big
+	{-, NS "mixer" (myTerminal ++ " -name mixer -e alsamixer") (appName =? "mixer") big-}
+	, NS "mixer" (myTerminal ++ " -name mixer -e pacmixer") (appName =? "mixer") big
 	-- , NS "agenda" (myTerminal ++ " -name agenda -e vim ~/agenda.txt") (appName =? "agenda") big
 	-- , NS "psi" "psi-plus" (className =? "Psi-plus") huge
 	, NS "transmission" "transmission-qt" (title =? "Transmission") huge
-	, NS "odesk" "odeskteam-qt4" (title =? "oDesk Team Room") small
+	, NS "odesk" "odeskteam-qt4" (title =? "oDesk Team") small
+	, NS "upwork" "upwork" (title =? "Upwork") small
 	] where
 		big = customFloating $ W.RationalRect (1/10) (1/10) (4/5) (4/5)
 		huge = customFloating $ W.RationalRect 0 (1/73) 1 (72/73)
@@ -115,6 +117,7 @@ myKeys = \conf -> mkKeymap conf $ map (\(k, f) -> (myModMaskP ++ k, f)) $
 	, ("S-m", namedScratchpadAction scratchpads "mixer")
 	, ("S-t", namedScratchpadAction scratchpads "transmission")
 	, ("C-t", namedScratchpadAction scratchpads "odesk")
+	, ("C-y", namedScratchpadAction scratchpads "upwork")
 
 	, ("<Print>", spawn "scrot") -- scrot
 	]
@@ -161,7 +164,8 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	-- , className =? "Exe" --> doIgnore
 	, className =? "Plugin-container" --> doIgnore
 	, className =? "Xmessage" --> doFloat
-	, className =? "Chromium" --> doShift "e"
+	{-, className =? "Chromium" --> doShift "e"-}
+	, className =? "Chromium" --> doFloat
 	, title =? "Chromium Preferences" --> doFloat
 	, className =? "Firefox" --> doShift "e"
 	, title =? "Firefox Preferences" --> doFloat
@@ -170,8 +174,9 @@ myManageHook = manageDocks <+> namedScratchpadManageHook scratchpads <+> compose
 	, className =? "psi+" --> doShift "s"
 	, className =? "Psi-plus" --> doShift "s"
 	-- , title =? "agenda" --> doFloat
-	, title =? "odeskteam-qt4" --> doShift "NSP"
 	, className =? "Odeskteam-qt4" --> doFloat
+	{-, title =? "upwork" --> doShift "NSP"-}
+	, className =? "Upwork" --> doFloat
 	, className =? "Qjackctl" --> doFloat
 	] <+> manageHook defaultConfig
 
