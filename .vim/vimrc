@@ -131,23 +131,26 @@ set backspace=indent,eol,start
 
 " bundles
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" let Vundle manage Vundle
-" required!
-Bundle 'gmarik/vundle'
+" let Vundle manage Vundle, required
+Bundle 'gmarik/Vundle.vim'
 
-Bundle 'vim-coffee-script'
-Bundle 'vim-stylus'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'mtscout6/vim-cjsx'
+Bundle 'wavded/vim-stylus'
 "Bundle 'Zenburn'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'groenewege/vim-less'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'gkz/vim-ls'
+Bundle 'derekwyatt/vim-scala'
+Bundle 'tpope/vim-haml'
 
-filetype plugin indent on " required!
+call vundle#end() " required
+filetype plugin indent on " required
 
 " Brief help
 " :BundleList          - list configured bundles
@@ -184,6 +187,9 @@ let xml_no_html = 1
 
 " coffee-script
 "au BufWritePost,FileWritePost *.coffee !coffee -c <afile>
+
+" blade templates (jade derivative)
+autocmd BufNewFile,BufReadPost *.blade set filetype=jade
 
 " tabs <-> spaces
 :command! -range=% -nargs=0 Tab2Space execute '<line1>,<line2>s#^\t\+#\=repeat(" ", len(submatch(0))*' . &ts . ')'
