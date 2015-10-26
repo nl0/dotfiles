@@ -1,4 +1,4 @@
-PATH="$HOME/bin:$HOME/.gem/ruby/1.9.1/bin:$PATH"
+PATH="$HOME/bin:$HOME/.gem/ruby/1.9.1/bin:$HOME/.gem/ruby/2.0.0/bin:$HOME/.gem/ruby/2.2.0/bin:$PATH"
 
 # Check for an interactive session
 [ -z "$PS1" ] && return
@@ -24,7 +24,7 @@ shopt -s autocd
 #set -o vi
 
 if [ -n "$DISPLAY" ]; then
-	export BROWSER=firefox
+  export BROWSER=firefox-developer
 fi
 
 export EDITOR=vim
