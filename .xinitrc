@@ -5,10 +5,12 @@ wallp &
 udiskie -s &
 kbdd
 
-jack_control start
-aloop &
+#jack_control start
+#aloop &
 
-redshift -v -l 55:61 -t 6000:4500 &
+pulseaudio --start
+
+redshift -v -l 55:61 -t 6000:5500 &
 
 cd wiki && make &
 cd
